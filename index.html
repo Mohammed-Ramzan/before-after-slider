@@ -616,7 +616,7 @@
                 resizer.classList.add('resize');
             });
 
-            document.body.addEventListener('mouseenter', function() {
+            resizer.addEventListener('mouseenter', function() {
                 active = true;
                 resizer.classList.add('resize');
             });
@@ -639,7 +639,7 @@
                 resizer.classList.add('resize');
             });
 
-           document.body.addEventListener('touchend', function() {
+            resizer.addEventListener('touchend', function() {
                 active = true;
                 resizer.classList.add('resize');
             });
