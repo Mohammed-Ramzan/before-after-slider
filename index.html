@@ -71,7 +71,7 @@
 }
  .cascade-slider_slides img {
      width: 100%;
-     height: 97%;
+     height: 97.7%;
 }
 
 
@@ -121,7 +121,6 @@
             background: white;
             -ms-touch-action: pan-y;
             touch-action: pan-y;
-            cursor: pointer;
         }
         
         .resizer:after {
@@ -181,11 +180,12 @@
                     width: 49%; /* Adjust the width as needed */
                     position: relative;
                     overflow: hidden;
+                    border: 3px solid white;
                 }
                 
                 .before-image {
                     position: absolute;
-                    height: 98%;
+                    height: 100%;
                     width: 50%;
                     top: 0;
                     left: 0;
@@ -590,59 +590,96 @@
                     pauseOnHover: true, // additional feature - will pause the autoplay function when hovering images
                     itemCount: 3 // Set 5 or 3 for total count of images to be shown
                 });
-            
-                const sliders = document.querySelectorAll('.before-after-slider');
+             const sliders = document.querySelectorAll('.before-after-slider');
 
-sliders.forEach((slider) => {
-    const before = slider.querySelector('.before-image');
+        sliders.forEach((slider, index) => {
+            const before = slider.querySelector('.before-image');
     const beforeImage = before.querySelector('img');
     const resizer = slider.querySelector('.resizer');
     let active = false;
 
-    // Sort overflow out for Overlay Image
-    document.addEventListener("DOMContentLoaded", function() {
-        let width = slider.offsetWidth;
-        beforeImage.style.width = width + 'px';
-    });
 
-    // Adjust width of image on resize 
-    window.addEventListener('resize', function() {
-        let width = before.offsetWidth;
-        beforeImage.style.width = width + 'px';
-    });
+            // Sort overflow out for Overlay Image
+            document.addEventListener("DOMContentLoaded", function() {
+                let width = slider.offsetWidth;
+                beforeImage.style.width = width + 'px';
+            });
 
-    function slide(x) {
-        let transform = Math.max(0, (Math.min(x, beforeImage.offsetWidth)));
-        before.style.width = transform + "px";
-        resizer.style.left = transform - 0 + "px";
-    }
+            // Adjust width of image on resize 
+            window.addEventListener('resize', function() {
+                let width = slider.offsetWidth;
+                beforeImage.style.width = width + 'px';
+            });
 
-    // Mouse events
-    slider.addEventListener('mouseover', function(e) {
-        active = true;
-        slide(e.pageX - beforeImage.getBoundingClientRect().left);
-    });
+            resizer.addEventListener('mouseover', function() {
+                active = true;
+                resizer.classList.add('resize');
+            });
 
-    slider.addEventListener('mousemove', function(e) {
-       active = true;
-            slide(e.pageX - beforeImage.getBoundingClientRect().left);
-    });
+            document.body.addEventListener('mouseenter', function() {
+                active = true;
+                resizer.classList.add('resize');
+            });
 
-    // Touch events
-    slider.addEventListener('touchstart', function(e) {
-        active = true;
-        slide(e.touches[0].pageX - beforeImage.getBoundingClientRect().left);
-    });
+            document.body.addEventListener('mouseleave', function() {
+                active = false;
+                resizer.classList.remove('resize');
+            });
 
-     slider.addEventListener('touchmove', function(e) {            
-        active = true;
-            slide(e.touches[0].pageX - beforeImage.getBoundingClientRect().left);
-    });
+            document.body.addEventListener('mousemove', function(e) {
+                if (!active) return;
+                let x = e.pageX;
+                x -= slider.getBoundingClientRect().left;
+                slideIt(x, slider);
+                pauseEvent(e);
+            });
 
-});
+            resizer.addEventListener('touchstart', function() {
+                active = true;
+                resizer.classList.add('resize');
+            });
 
+            document.body.addEventListener('touchend', function() {
+                active = false;
+                resizer.classList.remove('resize');
+            });
 
-            </script>
+            document.body.addEventListener('touchcancel', function() {
+                active = false;
+                resizer.classList.remove('resize');
+            });
+
+            // Calculation for dragging on touch devices
+            document.body.addEventListener('touchmove', function(e) {
+                if (!active) return;
+                let x;
+
+                let i;
+                for (i = 0; i < e.changedTouches.length; i++) {
+                    x = e.changedTouches[i].pageX;
+                }
+
+                x -= slider.getBoundingClientRect().left;
+                slideIt(x, slider);
+                pauseEvent(e);
+            });
+
+            function slideIt(x, slider) {
+                let transform = Math.max(0, (Math.min(x, slider.offsetWidth)));
+                before.style.width = transform + "px";
+                resizer.style.left = transform - 0 + "px";
+            }
+
+            // Stop divs being selected.
+            function pauseEvent(e) {
+                if (e.stopPropagation) e.stopPropagation();
+                if (e.preventDefault) e.preventDefault();
+                e.cancelBubble = true;
+                e.returnValue = false;
+                return false;
+            }
+        });
+    </script>
             
 </body>
 </html>
