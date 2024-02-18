@@ -628,14 +628,6 @@ sliders.forEach((slider) => {
             slide(e.pageX - beforeImage.getBoundingClientRect().left);
     });
 
-    slider.addEventListener('mouseup', function() {
-        active = false;
-    });
-
-    slider.addEventListener('mouseleave', function() {
-        active = false;
-    });
-
     // Touch events
     slider.addEventListener('touchstart', function(e) {
         active = true;
@@ -648,9 +640,6 @@ sliders.forEach((slider) => {
         }
     });
 
-    slider.addEventListener('touchend', function() {
-        active = false;
-    });
 });
 
 
