@@ -634,10 +634,9 @@ sliders.forEach((slider) => {
         slide(e.touches[0].pageX - beforeImage.getBoundingClientRect().left);
     });
 
-    slider.addEventListener('touchmove', function(e) {
-        if (active) {
+     slider.addEventListener('touchmove', function(e) {            
+        active = true;
             slide(e.touches[0].pageX - beforeImage.getBoundingClientRect().left);
-        }
     });
 
 });
