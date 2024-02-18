@@ -616,7 +616,7 @@
                 resizer.classList.add('resize');
             });
 
-            resizer.addEventListener('mouseenter', function() {
+            document.body.addEventListener('mouseenter', function() {
                 active = true;
                 resizer.classList.add('resize');
             });
@@ -639,9 +639,9 @@
                 resizer.classList.add('resize');
             });
 
-            resizer.addEventListener('touchend', function() {
-                active = true;
-                resizer.classList.add('resize');
+            document.body.addEventListener('touchend', function() {
+                active = false;
+                resizer.classList.remove('resize');
             });
 
             document.body.addEventListener('touchcancel', function() {
