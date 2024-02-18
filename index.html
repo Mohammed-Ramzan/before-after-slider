@@ -639,9 +639,9 @@
                 resizer.classList.add('resize');
             });
 
-            document.body.addEventListener('touchend', function() {
-                active = false;
-                resizer.classList.remove('resize');
+           document.body.addEventListener('touchend', function() {
+                active = true;
+                resizer.classList.add('resize');
             });
 
             document.body.addEventListener('touchcancel', function() {
